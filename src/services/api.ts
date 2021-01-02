@@ -16,7 +16,7 @@ const api = (
     method,
     [dataKey]: data,
     url,
-    ...headers
+    ...headers,
   };
 
   return axios(options);
