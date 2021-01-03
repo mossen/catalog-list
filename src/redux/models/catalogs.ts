@@ -1,6 +1,8 @@
 import { createModel } from "@rematch/core";
 import { RootModel } from "./";
+
 import api from "../../services/api";
+import { OrderType, ORDER_OPTIONS } from "../../constants";
 import { productsEndpoint } from "../../services/endpoints";
 
 export interface CatalogType {
@@ -8,6 +10,12 @@ export interface CatalogType {
   name: string;
   price: number;
   supplier: string;
+  _embedded: {
+    images: { url: string }[];
+  };
+  messaging: {
+    marketing: { short: string }[];
+  };
 }
 
 type DataType = {
@@ -16,19 +24,19 @@ type DataType = {
   };
 };
 
-type OrderType = "popularity" | "price_high" | "new" | "price_low";
-
 type CatalogsStateType = {
   data: DataType;
   error: string;
   order: OrderType;
+  page: number;
 };
 
 export const catalogs = createModel<RootModel>()({
   state: {
     data: {},
     error: "",
-    order: "popularity",
+    order: ORDER_OPTIONS[0],
+    page: 1,
   } as CatalogsStateType,
   reducers: {
     SET_PRODUCTS: (state: CatalogsStateType, data: DataType) => {
@@ -55,7 +63,13 @@ export const catalogs = createModel<RootModel>()({
     const { catalogs } = dispatch;
     return {
       async getCatalogs({} = {}, rootState): Promise<void> {
-        await api(productsEndpoint(), "GET")
+        await api(
+          productsEndpoint(
+            rootState.catalogs.order.value,
+            rootState.catalogs.page
+          ),
+          "GET"
+        )
           .then((response) => {
             const { data }: { data: DataType } = response;
             catalogs.SET_PRODUCTS(data);
@@ -65,6 +79,7 @@ export const catalogs = createModel<RootModel>()({
           });
       },
       async setOrder(payload: OrderType): Promise<void> {
+        console.log("🚀 ~ setOrder ~ payload", payload);
         await catalogs.SET_ORDER(payload);
         await catalogs.getCatalogs();
       },
