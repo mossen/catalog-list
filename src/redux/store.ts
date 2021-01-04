@@ -1,11 +1,15 @@
 import { init, RematchDispatch, RematchRootState } from "@rematch/core";
+import loading, { ExtraModelsFromLoading } from "@rematch/loading";
 
 import { models, RootModel } from "./models";
 
-export const store = init({
+type FullModel = ExtraModelsFromLoading<RootModel>;
+
+export const store = init<RootModel, FullModel>({
   models,
+  plugins: [loading()],
 });
 
-export type StoreType = typeof store;
-export type DispatchType = RematchDispatch<RootModel>;
-export type RootStateType = RematchRootState<RootModel>;
+export type Store = typeof store;
+export type Dispatch = RematchDispatch<RootModel>;
+export type RootState = RematchRootState<RootModel, FullModel>;
