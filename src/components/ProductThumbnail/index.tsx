@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "styled-components";
 import Image from "../Image";
 import QuickView from "./QuickView";
 import { ProductType } from "../../redux/models/catalogs";
@@ -17,7 +18,7 @@ const ProductThumbnail: React.FC<Props> = ({ data }) => {
   // TODO: add href when product page is created
 
   return (
-    <figure className="max-w-xs lg:w-1/5 md:w-1/3 sm:w-1/2 p-4 w-full">
+    <Figure className="lg:w-1/5 md:w-1/3 sm:w-1/2 p-4 w-full">
       <a className="block relative h-72 rounded overflow-hidden" href="">
         <Image alt={data.name} src={data._embedded.images[0].url} />
       </a>
@@ -38,8 +39,12 @@ const ProductThumbnail: React.FC<Props> = ({ data }) => {
           ) : null}
         </a>
       </figcaption>
-    </figure>
+    </Figure>
   );
 };
+
+const Figure = styled.figure`
+  max-width: 20rem;
+`;
 
 export default ProductThumbnail;

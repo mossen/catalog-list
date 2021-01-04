@@ -31,7 +31,7 @@ const Home: React.FC = () => {
   return (
     <Container>
       <section className="text-gray-600 body-font">
-        <div className="container px-5 py-24 mx-auto">
+        <div className="max-w-screen-xl container px-5 py-24 mx-auto">
           <div className="w-full flex flex-col md:flex-row justify-center md:justify-between items-center mb-10">
             <SelectOrder
               className="w-full md:w-1/3"
