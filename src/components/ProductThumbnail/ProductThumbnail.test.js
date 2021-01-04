@@ -19,10 +19,11 @@ const product = {
 };
 
 test("renders ProductThumbnail component", () => {
-  const { getByText, findAllByText, getByAltText } = render(
+  const { getByText, findByText, getByAltText } = render(
     <ProductThumbnail data={product} />
   );
+
   getByAltText(/Product name/);
-  findAllByText(/Product name/);
+  findByText(/Product name/);
   getByText(/30.50/);
 });
