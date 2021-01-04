@@ -1,7 +1,7 @@
-export type OrderType = { value: string; label: string };
+export type OrderType = { value: string; name: string };
 export const ORDER_OPTIONS: OrderType[] = [
-  { value: "popularity", label: "Popularity" },
-  { value: "new", label: "New" },
-  { value: "price_high", label: "Price High to Low" },
-  { value: "price_low", label: "Price Low to High" },
+  { value: "popularity", name: "Popularity" },
+  { value: "new", name: "New" },
+  { value: "price_high", name: "Price High to Low" },
+  { value: "price_low", name: "Price Low to High" },
 ];

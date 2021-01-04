@@ -4,6 +4,9 @@
 
 @import "tailwindcss/utilities";
 
+@import "./select.css";
+@import "./pagination.css";
+
 .nav-link {
   @apply mt-1 block px-2 py-1 text-white font-semibold rounded
 }
@@ -17,3 +20,7 @@
     @apply mt-0 ml-2;
   }
 }
+
+
+
+

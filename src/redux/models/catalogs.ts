@@ -2,10 +2,10 @@ import { createModel } from "@rematch/core";
 import { RootModel } from "./";
 
 import api from "../../services/api";
-import { OrderType, ORDER_OPTIONS } from "../../constants";
+import { ORDER_OPTIONS } from "../../constants";
 import { productsEndpoint } from "../../services/endpoints";
 
-export interface CatalogType {
+export interface ProductType {
   id: number;
   name: string;
   price: number;
@@ -20,14 +20,15 @@ export interface CatalogType {
 
 type DataType = {
   _embedded: {
-    product: CatalogType[];
+    product: ProductType[];
   };
+  page_count: number;
 };
 
 type CatalogsStateType = {
   data: DataType;
   error: string;
-  order: OrderType;
+  order: string;
   page: number;
 };
 
@@ -35,7 +36,7 @@ export const catalogs = createModel<RootModel>()({
   state: {
     data: {},
     error: "",
-    order: ORDER_OPTIONS[0],
+    order: ORDER_OPTIONS[0].value,
     page: 1,
   } as CatalogsStateType,
   reducers: {
@@ -52,10 +53,17 @@ export const catalogs = createModel<RootModel>()({
         error,
       };
     },
-    SET_ORDER: (state: CatalogsStateType, order: OrderType) => {
+    SET_ORDER: (state: CatalogsStateType, order: string) => {
       return {
         ...state,
         order,
+        page: 1,
+      };
+    },
+    SET_PAGE: (state: CatalogsStateType, page: number) => {
+      return {
+        ...state,
+        page,
       };
     },
   },
@@ -64,10 +72,7 @@ export const catalogs = createModel<RootModel>()({
     return {
       async getCatalogs({} = {}, rootState): Promise<void> {
         await api(
-          productsEndpoint(
-            rootState.catalogs.order.value,
-            rootState.catalogs.page
-          ),
+          productsEndpoint(rootState.catalogs.order, rootState.catalogs.page),
           "GET"
         )
           .then((response) => {
@@ -78,9 +83,12 @@ export const catalogs = createModel<RootModel>()({
             catalogs.SET_ERROR(error.message);
           });
       },
-      async setOrder(payload: OrderType): Promise<void> {
-        console.log("🚀 ~ setOrder ~ payload", payload);
-        await catalogs.SET_ORDER(payload);
+      async setOrder(payload: string): Promise<void> {
+        catalogs.SET_ORDER(payload);
+        await catalogs.getCatalogs();
+      },
+      async setPage(payload: number): Promise<void> {
+        catalogs.SET_PAGE(payload);
         await catalogs.getCatalogs();
       },
     };

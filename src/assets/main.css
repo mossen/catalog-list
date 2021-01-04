@@ -29128,6 +29128,10 @@ video {
   animation: bounce 1s infinite;
 }
 
+@import "./select.css";
+
+@import "./pagination.css";
+
 .nav-link {
   border-radius: 0.25rem;
   display: block;
@@ -171902,3 +171906,7 @@ video {
     animation: bounce 1s infinite;
   }
 }
+
+
+
+

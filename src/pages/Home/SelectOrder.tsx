@@ -1,20 +1,33 @@
 import React from "react";
-import ReactSelect from "react-select";
+import cx from "classnames";
+import SelectSearch from "react-select-search";
 
 import { Dispatch } from "../../redux/store";
-import { ORDER_OPTIONS, OrderType } from "../../constants";
+import { ORDER_OPTIONS } from "../../constants";
 
 type Props = {
   dispatch: Dispatch;
-  selectedOption: OrderType;
+  selectedOption: string;
+  className: string;
 };
 
-const SelectOrder: React.FC<Props> = ({ dispatch, selectedOption }) => {
+const SelectOrder: React.FC<Props> = ({
+  dispatch,
+  selectedOption,
+  className,
+}) => {
+  const handleOnChange = (option) => {
+    dispatch.catalogs.setOrder(option);
+  };
+
   return (
-    <ReactSelect
+    <SelectSearch
+      className={cx("select-search", className)}
       options={ORDER_OPTIONS}
-      defaultValue={selectedOption}
-      onChange={(option: OrderType) => dispatch.catalogs.setOrder(option)}
+      value={selectedOption}
+      onChange={(option) => {
+        handleOnChange(option);
+      }}
     />
   );
 };

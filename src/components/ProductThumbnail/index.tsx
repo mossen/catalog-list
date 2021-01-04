@@ -1,25 +1,33 @@
 import React from "react";
-import { CatalogType } from "../../redux/models/catalogs";
+import cx from "classnames";
+import { ProductType } from "../../redux/models/catalogs";
 
 type Props = {
-  data: CatalogType;
+  data: ProductType;
 };
 
 /**
  * Product Thumbnail component
  *
- * @param {CatalogType} { data }
+ * @param {ProductType} { data }
  * @return {*} React.node
  */
 const ProductThumbnail: React.FC<Props> = ({ data }) => {
   // TODO: add href when product page is created
+  // TODO: use lazy loading for images
+  const [isLoaded, setIsLoaded] = React.useState(false);
+
   return (
-    <figure className="lg:w-1/4 md:w-1/2 p-4 w-full">
-      <a className="block relative h-48 rounded overflow-hidden" href="">
+    <figure className="max-w-xs lg:w-1/5 md:w-1/3 sm:w-1/2 p-4 w-full">
+      <a className="block relative h-72 rounded overflow-hidden" href="">
         <img
           alt={data.name}
-          className="object-cover object-center w-full h-full block"
+          className={cx(
+            { "animate-pulse": !isLoaded },
+            "bg-gray-200 object-cover object-center w-full h-full block"
+          )}
           src={data._embedded.images[0].url}
+          onLoad={() => setIsLoaded(true)}
         />
       </a>
       <figcaption className="mt-4">
@@ -27,7 +35,7 @@ const ProductThumbnail: React.FC<Props> = ({ data }) => {
           View
         </span>
         <a href="">
-          <h2 className="text-gray-900 title-font text-lg font-medium mr-12 truncate">
+          <h2 className="text-gray-900 title-font text-base font-medium mr-12 truncate">
             {data.supplier}
           </h2>
           <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1 truncate">

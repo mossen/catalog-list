@@ -1,8 +1,8 @@
-import axios, { AxiosPromise } from "axios";
+import axios, { AxiosPromise, AxiosRequestConfig, Method } from "axios";
 
 const api = (
-  url,
-  method,
+  url: string,
+  method: Method,
   data = null,
   headers = { headers: { "Content-Type": "application/json" } }
 ): AxiosPromise => {
@@ -12,7 +12,7 @@ const api = (
     dataKey = "params";
   }
 
-  const options = {
+  const options: AxiosRequestConfig = {
     method,
     [dataKey]: data,
     url,

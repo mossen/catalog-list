@@ -13,6 +13,9 @@ const product = {
       },
     ],
   },
+  messaging: {
+    marketing: [],
+  },
 };
 
 test("renders ProductThumbnail component", () => {
